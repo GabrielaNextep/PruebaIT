@@ -54,7 +54,7 @@ export default function StreamerPaymentPage() {
           card_token: "364c3dd0-a211-4a97-b2f9-bdf725502b06",
           amount: parseFloat(amount) || 99,
           merchant: {
-            descriptor: "AMAZON.COM",
+            descriptor: "StreamerPay",
             city: "a",
             state: "a",
             country: "USA"
