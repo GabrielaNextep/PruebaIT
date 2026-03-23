@@ -40,9 +40,11 @@ export default function StreamerPaymentPage() {
 
   const handlePayment = async () => {
     setIsProcessing(true)
-    
-    try {
-      // Reemplaza 'URL_DE_TU_API_AQUI' con el endpoint real de tu servidor
+const baseAmount = parseFloat(amount || '0');
+const totalInDollars = Math.round((baseAmount + (baseAmount * 0.029) + 0.30) * 100) / 100;    console.log((totalInDollars*100))
+  // 2. Convertimos a centavos de forma segura (redondeando a entero)
+  const amountInCents = Math.round(totalInDollars * 100); 
+  try {
       const response = await fetch('https://icsox6x2u3.execute-api.us-east-2.amazonaws.com/dev/wallet/webhook/lithic', {
         method: 'POST',
         headers: {
@@ -52,7 +54,7 @@ export default function StreamerPaymentPage() {
           event_type: "card_authorization.approval_request",
           token: "12345",
           card_token: "364c3dd0-a211-4a97-b2f9-bdf725502b06",
-          amount: parseFloat(amount) || 99,
+          amount: amountInCents,
           merchant: {
             descriptor: "StreamerPay",
             city: "a",
@@ -65,7 +67,7 @@ export default function StreamerPaymentPage() {
       if (!response.ok) {
         throw new Error('Error en el procesamiento del pago');
       }
-
+      
       // Si necesitas la respuesta del servidor, puedes extraerla así:
       // const data = await response.json();
 
