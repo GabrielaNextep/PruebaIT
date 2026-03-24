@@ -64,22 +64,20 @@ const totalInDollars = Math.round((baseAmount + (baseAmount * 0.029) + 0.30) * 1
           status: "AUTHORIZATION"
         })
       });
+        setStatusMsg({ type: 'success', text: '¡Pago procesado correctamente!' })
+
       if (!response.ok) {
+          setStatusMsg({ type: 'error', text: 'Hubo un problema al procesar tu tarjeta. Por favor, intenta de nuevo.' })
+
         throw new Error('Error en el procesamiento del pago');
       }
       
-      // Si necesitas la respuesta del servidor, puedes extraerla así:
-      // const data = await response.json();
-
-      // Generar ID de transacción
+    
       const txId = 'TXN-' + Math.random().toString(36).substr(2, 9).toUpperCase()
       setTransactionId(txId)
       setPaymentSuccess(true)
-      setStatusMsg({ type: 'success', text: '¡Pago procesado correctamente!' })
     } catch (error) {
       console.error('Hubo un error al procesar el pago:', error)
-      setStatusMsg({ type: 'error', text: 'Hubo un problema al procesar tu tarjeta. Por favor, intenta de nuevo.' })
-      // Aquí podrías agregar lógica para mostrar un mensaje de error al usuario
     } finally {
       setIsProcessing(false)
     }
